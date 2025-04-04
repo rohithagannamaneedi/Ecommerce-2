@@ -1,22 +1,30 @@
 const express = require("express");
-const dotenv = require("dotenv");
-dotenv.config();
-const mongoose = require("mongoose");
-const MONGO_URL = process.env.MONGO_URL;
-const PORT = process.env.PORT || 8080;
 const app = express();
 
-app.get("/",(res,req)=>{
-    res.setEncoding("connected to e-commerce backend successfully");
-})
+const dotenv = require("dotenv");
+dotenv.config();
+
+const mongoose = require("mongoose");
+
+const userRouter = require("./controller/userRouter");
+
+const MONGO_URL = process.env.MONGO_URL;
+
+const PORT = process.env.PORT || 8000;
+
+app.use(express.json());
+
+app.get('/',(req,res)=>{
+    res.send("connected to e-commerce backend successfully");
+});
+
+app.use('/user',userRouter)
 
 mongoose.connect(MONGO_URL)
 .then((check)=>{
     app.listen(PORT,()=>{
-        console.log("connected to server");
+        console.log("Connected successfully");
     })
-}).catch((err)=>{
-    console.log(err);
+}).catch((error)=>{
+    console.log("Error",error);
 })
-
-
